@@ -2,18 +2,25 @@
 
 import {
   BuildingOfficeIcon,
+  BuildingStorefrontIcon,
   CreditCardIcon,
+  HomeIcon,
+  ShoppingBagIcon,
   UserIcon,
   UsersIcon,
 } from "@heroicons/react/20/solid";
 
 const tabs = [
-  { name: "Estadias", href: "#", icon: UserIcon, current: false },
-  { name: "Company", href: "#", icon: BuildingOfficeIcon, current: false },
-  { name: "Team Members", href: "#", icon: UsersIcon, current: true },
-  { name: "Billing", href: "#", icon: CreditCardIcon, current: false },
+  { name: "Experiências", href: "#", icon: UsersIcon, current: true },
+  { name: "Estadias", href: "#", icon: HomeIcon, current: false },
+  {
+    name: "Restaurantes",
+    href: "#",
+    icon: BuildingStorefrontIcon,
+    current: false,
+  },
+  { name: "Produtos", href: "#", icon: ShoppingBagIcon, current: false },
 ];
-
 // @ts-ignore
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -49,7 +56,7 @@ export function Categories() {
                   tab.current
                     ? "border-green-700 text-green-700"
                     : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
-                  "group inline-flex items-center border-b-2 py-4 px-1 text-sm font-medium"
+                  "group inline-flex items-center border-b-2 py-4 px-1 text-sm font-medium",
                 )}
                 aria-current={tab.current ? "page" : undefined}
               >
@@ -58,7 +65,7 @@ export function Categories() {
                     tab.current
                       ? "text-green-700"
                       : "text-gray-400 group-hover:text-gray-500",
-                    "-ml-0.5 mr-2 h-5 w-5"
+                    "-ml-0.5 mr-2 h-5 w-5",
                   )}
                   aria-hidden="true"
                 />

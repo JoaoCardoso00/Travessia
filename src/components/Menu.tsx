@@ -1,12 +1,12 @@
 "use client";
 
-import { auth, googleAuthProvider } from "@/lib/firebase";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
-import { signInWithPopup } from "firebase/auth";
 import Link from "next/link";
+import { useAuth } from "@/contexts/useAuth";
+import { cookies } from "next/dist/client/components/headers";
 
 const navigation = [
   { name: "Experiências", href: "/experiencias" },
@@ -17,15 +17,20 @@ const navigation = [
 
 export function Menu() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
+  const { login, getUser, currentUser, signOut } = useAuth();
+  const user = getUser();
 
   async function handleGoogleLogin() {
-    const userCredentials = await signInWithPopup(auth, googleAuthProvider)
+    await login();
 
-    console.log(userCredentials)
+    router.push("/dashboard");
+  }
 
-    router.push("/dashboard")
+  async function handleGoogleLogout() {
+    await signOut();
 
+    router.push("/");
   }
 
   return (
@@ -62,7 +67,10 @@ export function Menu() {
           ))}
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <button onClick={handleGoogleLogin} className="text-sm font-semibold leading-6 text-gray-900">
+          <button
+            onClick={handleGoogleLogin}
+            className="text-sm font-semibold leading-6 text-gray-900"
+          >
             Log in <span aria-hidden="true">&rarr;</span>
           </button>
         </div>
@@ -107,12 +115,21 @@ export function Menu() {
                 ))}
               </div>
               <div className="py-6">
-                <button
-                  onClick={handleGoogleLogin}
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >
-                  Log in
-                </button>
+                {user ? (
+                  <button
+                    onClick={handleGoogleLogout}
+                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                  >
+                    Log out
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleGoogleLogin}
+                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                  >
+                    Log in
+                  </button>
+                )}
               </div>
             </div>
           </div>
